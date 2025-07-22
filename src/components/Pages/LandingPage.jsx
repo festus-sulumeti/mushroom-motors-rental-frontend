@@ -102,7 +102,8 @@ const LandingPage = () => {
       </section>
 
       {/* Call To Action */}
-      <section className="px-10 py-16 bg-[#161B22] text-center">
+     {/* Call To Action */}
+      <section className="px-10 py-16 bg-[#21262D] text-center">
         <h3 className="text-3xl font-bold mb-4 text-[#FACC15]">Ready to Get Started?</h3>
         <p className="text-gray-400 mb-8">Experience affordable, convenient, and reliable car rentals across Kenya today.</p>
         <Link
