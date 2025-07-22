@@ -26,12 +26,6 @@ const AdminDashboardHome = () => {
             {dropdownOpen && (
               <div className="absolute right-0 mt-3 w-48 bg-[#161B22] border border-gray-700 rounded-md shadow-md py-2 z-50">
                 <Link
-                  to="/admin/account-settings"
-                  className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#0D1117] hover:text-[#FACC15]"
-                >
-                  Account Settings
-                </Link>
-                <Link
                   to="/"
                   className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#0D1117] hover:text-[#FACC15]"
                 >
