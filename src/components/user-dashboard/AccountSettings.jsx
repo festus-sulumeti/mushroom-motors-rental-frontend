@@ -13,9 +13,11 @@ const AccountSettings = () => {
     email: accountDetails.email,
     phone: accountDetails.phone,
     password: '',
+    confirmPassword: '',
   });
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [error, setError] = useState('');
 
   const handleEditChange = (e) => {
     setEditForm({ ...editForm, [e.target.name]: e.target.value });
@@ -23,6 +25,13 @@ const AccountSettings = () => {
 
   const handleEditSubmit = (e) => {
     e.preventDefault();
+    setError('');
+
+    if (editForm.password && editForm.password !== editForm.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
     console.log('Updated account info:', editForm);
     // TODO: API call to update account info
   };
@@ -53,6 +62,9 @@ const AccountSettings = () => {
         {/* Edit Account Section */}
         <div className="bg-[#161B22] rounded-xl shadow-md p-8">
           <h2 className="text-2xl font-semibold mb-4 text-[#FACC15]">Edit Account Information</h2>
+
+          {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+
           <form onSubmit={handleEditSubmit} className="space-y-4 text-sm">
             <div>
               <label className="block text-gray-300 mb-1">Name</label>
@@ -61,6 +73,7 @@ const AccountSettings = () => {
                 name="name"
                 value={editForm.name}
                 onChange={handleEditChange}
+                placeholder="Enter your name"
                 className="w-full p-3 rounded-md bg-[#0D1117] border border-gray-600 text-white"
                 required
               />
@@ -73,6 +86,7 @@ const AccountSettings = () => {
                 name="email"
                 value={editForm.email}
                 onChange={handleEditChange}
+                placeholder="Enter your email"
                 className="w-full p-3 rounded-md bg-[#0D1117] border border-gray-600 text-white"
                 required
               />
@@ -85,6 +99,7 @@ const AccountSettings = () => {
                 name="phone"
                 value={editForm.phone}
                 onChange={handleEditChange}
+                placeholder="Enter your phone number"
                 className="w-full p-3 rounded-md bg-[#0D1117] border border-gray-600 text-white"
               />
             </div>
@@ -96,8 +111,20 @@ const AccountSettings = () => {
                 name="password"
                 value={editForm.password}
                 onChange={handleEditChange}
+                placeholder="Enter new password"
                 className="w-full p-3 rounded-md bg-[#0D1117] border border-gray-600 text-white"
-                placeholder="Leave blank to keep current password"
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-300 mb-1">Confirm New Password</label>
+              <input
+                type="password"
+                name="confirmPassword"
+                value={editForm.confirmPassword}
+                onChange={handleEditChange}
+                placeholder="Confirm new password"
+                className="w-full p-3 rounded-md bg-[#0D1117] border border-gray-600 text-white"
               />
             </div>
 
