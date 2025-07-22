@@ -1,19 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaCarSide, FaUserCog, FaClipboardList } from 'react-icons/fa';
+import { FaCarSide, FaUserCog, FaClipboardList, FaCog } from 'react-icons/fa';
 
 const UserDashboardHome = () => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-[#0D1117] text-white flex flex-col">
       {/* Header */}
-      <header className="bg-[#161B22] p-6 flex justify-between items-center shadow-md">
+      <header className="bg-[#161B22] p-6 flex justify-between items-center shadow-md relative">
         <h1 className="text-2xl font-bold text-[#FACC15]">Mushroom Motors Dashboard</h1>
-        <nav className="hidden md:flex space-x-8 text-gray-300 font-medium">
-          <Link to="/dashboard" className="hover:text-[#FACC15]">Home</Link>
-          <Link to="/my-rentals" className="hover:text-[#FACC15]">My Rentals</Link>
-          <Link to="/account-settings" className="hover:text-[#FACC15]">Account Settings</Link>
-          <Link to="/" className="hover:text-[#FACC15]">Logout</Link>
-        </nav>
+
+        <div className="relative">
+          <button
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+            className="text-gray-300 text-2xl hover:text-[#FACC15] focus:outline-none"
+          >
+            <FaCog />
+          </button>
+          {dropdownOpen && (
+            <div className="absolute right-0 mt-3 w-48 bg-[#161B22] border border-gray-700 rounded-md shadow-md py-2 z-50">
+             
+              <Link
+                to="/account-settings"
+                className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#0D1117] hover:text-[#FACC15]"
+              >
+                Account Settings
+              </Link>
+              <Link
+                to="/"
+                className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#0D1117] hover:text-[#FACC15]"
+              >
+                Logout
+              </Link>
+            </div>
+          )}
+        </div>
       </header>
 
       {/* Main Content */}
