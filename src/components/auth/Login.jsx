@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 const LoginPage = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <div className="min-h-screen bg-[#0D1117] flex flex-col justify-center items-center px-4">
       <div className="max-w-md w-full bg-[#161B22] rounded-lg shadow-lg p-8">
@@ -20,16 +23,22 @@ const LoginPage = () => {
             />
           </div>
 
-          <div>
+          <div className="relative">
             <label htmlFor="password" className="block text-gray-300 font-medium mb-2">
               Password
             </label>
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               id="password"
               placeholder="********"
               className="w-full px-4 py-2 bg-[#0D1117] border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#FACC15]"
             />
+            <div
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-10 cursor-pointer text-gray-400"
+            >
+              {showPassword ? <FiEyeOff /> : <FiEye />}
+            </div>
           </div>
 
           <button
