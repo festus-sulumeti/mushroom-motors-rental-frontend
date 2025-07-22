@@ -1,0 +1,47 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+const LandingPage = () => {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white flex flex-col">
+      <header className="flex justify-between items-center p-6">
+        <h1 className="text-3xl font-bold text-yellow-400">Mushroom Motors</h1>
+        <nav className="space-x-6 text-gray-300">
+          <Link to="/login" className="hover:text-yellow-400">Login</Link>
+          <Link to="/signup" className="hover:text-yellow-400">Sign Up</Link>
+        </nav>
+      </header>
+
+      <main className="flex flex-col md:flex-row items-center justify-between flex-grow px-10">
+        <div className="max-w-xl space-y-6">
+          <h2 className="text-4xl md:text-6xl font-extrabold leading-tight">
+            Rent Smarter, Drive Further <span className="text-yellow-400">with Mushroom Motors</span>
+          </h2>
+          <p className="text-lg text-gray-300">
+            Kenya’s trusted car rental platform for reliable, affordable, and convenient vehicle rentals. Explore our fleet, book in minutes, and hit the road with confidence.
+          </p>
+          <Link
+            to="/cars"
+            className="inline-block px-6 py-3 bg-yellow-400 text-gray-900 font-semibold rounded-lg shadow-lg hover:bg-yellow-300 transition"
+          >
+            View Available Cars
+          </Link>
+        </div>
+
+        <div className="mt-10 md:mt-0">
+          <img
+            src="https://images.unsplash.com/photo-1606301246670-6fc1997b27a0?auto=format&fit=crop&w=800&q=80"
+            alt="Car Rental"
+            className="rounded-2xl shadow-2xl w-full max-w-md"
+          />
+        </div>
+      </main>
+
+      <footer className="bg-gray-800 text-gray-400 py-8 text-center">
+        &copy; {new Date().getFullYear()} Mushroom Motors. All rights reserved.
+      </footer>
+    </div>
+  );
+};
+
+export default LandingPage;
