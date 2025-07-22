@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import carImage from '../../assets/image.jpeg';
 
 const LandingPage = () => {
   return (
@@ -25,7 +26,7 @@ const LandingPage = () => {
 
         <div className="mt-10 md:mt-0">
           <img
-            src="https://images.unsplash.com/photo-1606301246670-6fc1997b27a0?auto=format&fit=crop&w=800&q=80"
+            src={carImage}
             alt="Car Rental"
             className="rounded-2xl shadow-2xl w-full max-w-md"
           />
