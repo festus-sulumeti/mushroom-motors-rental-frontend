@@ -60,12 +60,17 @@ const UserDashboardHome = () => {
             <Link to="/cars" className="text-[#FACC15] font-medium hover:underline">Browse Cars →</Link>
           </div>
 
-          <div className="bg-[#161B22] rounded-xl p-8 shadow-md hover:ring-2 hover:ring-[#FACC15] transition cursor-pointer">
+         <div className="bg-[#161B22] rounded-xl p-8 shadow-md hover:ring-2 hover:ring-[#FACC15] transition cursor-pointer">
             <FaUserCog className="text-3xl text-[#FACC15] mb-4" />
-            <h3 className="text-xl font-semibold text-white mb-2">Account Settings</h3>
-            <p className="text-gray-400 mb-4">Edit your personal information, security settings, and more.</p>
-            <Link to="/account-settings" className="text-[#FACC15] font-medium hover:underline">Manage Account →</Link>
-          </div>
+            <h3 className="text-xl font-semibold text-white mb-2">Support & Assistance</h3>
+            <p className="text-gray-400 mb-4">
+                Get help with your bookings, payments, or any issues you face.
+            </p>
+            <Link to="/support" className="text-[#FACC15] font-medium hover:underline">
+                Visit Support →
+            </Link>
+         </div>
+
         </div>
       </main>
 
