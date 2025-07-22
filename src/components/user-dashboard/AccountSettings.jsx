@@ -1,106 +1,126 @@
 import React, { useState } from 'react';
 
 const AccountSettings = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
+  const [accountDetails] = useState({
+    name: 'John Doe',
+    email: 'johndoe@example.com',
+    phone: '+254712345678',
+    memberSince: 'January 2024',
+  });
+
+  const [editForm, setEditForm] = useState({
+    name: accountDetails.name,
+    email: accountDetails.email,
+    phone: accountDetails.phone,
     password: '',
   });
 
-  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleEditChange = (e) => {
+    setEditForm({ ...editForm, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleEditSubmit = (e) => {
     e.preventDefault();
-    console.log('Updated Info:', formData);
-    // TODO: Add API call to update account info
+    console.log('Updated account info:', editForm);
+    // TODO: API call to update account info
   };
 
   const handleDeleteAccount = () => {
     console.log('Account deleted');
-    // TODO: Add API call to delete account
-    setShowConfirmDelete(false);
+    // TODO: API call to delete account
+    setShowDeleteConfirm(false);
   };
 
   return (
-    <div className="min-h-screen bg-[#0D1117] text-white flex flex-col items-center py-16 px-6">
-      <h1 className="text-3xl font-bold text-[#FACC15] mb-8">Account Settings</h1>
+    <div className="min-h-screen bg-[#0D1117] text-white py-16 px-4 md:px-16">
+      <h1 className="text-3xl font-bold text-[#FACC15] mb-8 text-center">Account Settings</h1>
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-[#161B22] rounded-xl shadow-md p-8 w-full max-w-md space-y-6 mb-8"
-      >
-        <div>
-          <label className="block text-gray-300 mb-2">Name</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full p-3 rounded-md bg-[#0D1117] border border-gray-600 text-white focus:ring-[#FACC15]"
-            placeholder="Your Name"
-            required
-          />
+      <div className="grid md:grid-cols-2 gap-10 max-w-5xl mx-auto">
+
+        {/* Account Details Section */}
+        <div className="bg-[#161B22] rounded-xl shadow-md p-8">
+          <h2 className="text-2xl font-semibold mb-4 text-[#FACC15]">Account Details</h2>
+          <ul className="text-gray-300 space-y-2 text-sm">
+            <li><span className="font-semibold text-white">Name:</span> {accountDetails.name}</li>
+            <li><span className="font-semibold text-white">Email:</span> {accountDetails.email}</li>
+            <li><span className="font-semibold text-white">Phone:</span> {accountDetails.phone}</li>
+            <li><span className="font-semibold text-white">Member Since:</span> {accountDetails.memberSince}</li>
+          </ul>
         </div>
 
-        <div>
-          <label className="block text-gray-300 mb-2">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full p-3 rounded-md bg-[#0D1117] border border-gray-600 text-white focus:ring-[#FACC15]"
-            placeholder="you@example.com"
-            required
-          />
-        </div>
+        {/* Edit Account Section */}
+        <div className="bg-[#161B22] rounded-xl shadow-md p-8">
+          <h2 className="text-2xl font-semibold mb-4 text-[#FACC15]">Edit Account Information</h2>
+          <form onSubmit={handleEditSubmit} className="space-y-4 text-sm">
+            <div>
+              <label className="block text-gray-300 mb-1">Name</label>
+              <input
+                type="text"
+                name="name"
+                value={editForm.name}
+                onChange={handleEditChange}
+                className="w-full p-3 rounded-md bg-[#0D1117] border border-gray-600 text-white"
+                required
+              />
+            </div>
 
-        <div>
-          <label className="block text-gray-300 mb-2">Phone</label>
-          <input
-            type="text"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            className="w-full p-3 rounded-md bg-[#0D1117] border border-gray-600 text-white focus:ring-[#FACC15]"
-            placeholder="+2547XXXXXXX"
-          />
-        </div>
+            <div>
+              <label className="block text-gray-300 mb-1">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={editForm.email}
+                onChange={handleEditChange}
+                className="w-full p-3 rounded-md bg-[#0D1117] border border-gray-600 text-white"
+                required
+              />
+            </div>
 
-        <div>
-          <label className="block text-gray-300 mb-2">Password</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full p-3 rounded-md bg-[#0D1117] border border-gray-600 text-white focus:ring-[#FACC15]"
-            placeholder="New Password"
-          />
-        </div>
+            <div>
+              <label className="block text-gray-300 mb-1">Phone</label>
+              <input
+                type="text"
+                name="phone"
+                value={editForm.phone}
+                onChange={handleEditChange}
+                className="w-full p-3 rounded-md bg-[#0D1117] border border-gray-600 text-white"
+              />
+            </div>
 
-        <button
-          type="submit"
-          className="w-full bg-[#FACC15] text-black font-bold py-3 rounded-md hover:bg-yellow-400 transition"
-        >
-          Save Changes
-        </button>
-      </form>
+            <div>
+              <label className="block text-gray-300 mb-1">New Password</label>
+              <input
+                type="password"
+                name="password"
+                value={editForm.password}
+                onChange={handleEditChange}
+                className="w-full p-3 rounded-md bg-[#0D1117] border border-gray-600 text-white"
+                placeholder="Leave blank to keep current password"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-[#FACC15] text-black font-bold py-2 rounded-md hover:bg-yellow-400 transition"
+            >
+              Save Changes
+            </button>
+          </form>
+        </div>
+      </div>
 
       {/* Delete Account Section */}
-      <div className="bg-[#161B22] rounded-xl shadow-md p-8 w-full max-w-md space-y-4 border border-red-700">
-        <h2 className="text-xl font-semibold text-red-500">Delete Account</h2>
-        <p className="text-gray-400 text-sm">
+      <div className="max-w-2xl mx-auto mt-12 bg-[#161B22] rounded-xl shadow-md p-8 border border-red-700">
+        <h2 className="text-xl font-semibold text-red-500 mb-4">Delete Account</h2>
+        <p className="text-gray-400 text-sm mb-4">
           Once you delete your account, all your data will be permanently removed. This action cannot be undone.
         </p>
-        {!showConfirmDelete ? (
+
+        {!showDeleteConfirm ? (
           <button
-            onClick={() => setShowConfirmDelete(true)}
+            onClick={() => setShowDeleteConfirm(true)}
             className="w-full bg-red-600 text-white font-bold py-3 rounded-md hover:bg-red-700 transition"
           >
             Delete My Account
@@ -116,7 +136,7 @@ const AccountSettings = () => {
                 Yes, Delete
               </button>
               <button
-                onClick={() => setShowConfirmDelete(false)}
+                onClick={() => setShowDeleteConfirm(false)}
                 className="flex-1 bg-gray-600 text-white font-bold py-2 rounded-md hover:bg-gray-700 transition"
               >
                 Cancel
