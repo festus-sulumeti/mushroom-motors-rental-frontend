@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from './Navbar'; // adjust path as necessary
+import Navbar from './Navbar';
+import Footer from './Footer';
 
 const LandingPage = () => {
   return (
@@ -31,9 +32,7 @@ const LandingPage = () => {
         </div>
       </main>
 
-      <footer className="bg-[#0D1117] text-gray-400 py-8 text-center">
-        &copy; {new Date().getFullYear()} Mushroom Motors. All rights reserved.
-      </footer>
+      <Footer />
     </div>
   );
 };
