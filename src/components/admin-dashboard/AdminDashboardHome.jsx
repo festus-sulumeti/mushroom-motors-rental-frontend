@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaCarSide, FaUsers, FaClipboardList, FaChartBar } from 'react-icons/fa';
-import AdminNavbar from '../components/AdminNavbar';
+// import AdminNavbar from '../components/AdminNavbar';
 
 const AdminDashboardHome = () => {
   return (
     <div className="min-h-screen bg-[#0D1117] text-white flex flex-col">
-      <AdminNavbar />
+      {/* <AdminNavbar /> */}
 
       <main className="flex-grow px-10 py-16">
         <h1 className="text-4xl font-bold text-[#FACC15] mb-6">Admin Dashboard</h1>
