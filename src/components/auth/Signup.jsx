@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 const SignupPage = () => {
@@ -13,6 +13,8 @@ const SignupPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -43,7 +45,10 @@ const SignupPage = () => {
       if (!res.ok) throw new Error(data.message || "Signup failed");
 
       setSuccess("Account created successfully!");
-      // optionally redirect to login
+
+      setTimeout(() => {
+        navigate('/user-dashboard');
+      }, 1000);
     } catch (err) {
       setError(err.message);
     }
