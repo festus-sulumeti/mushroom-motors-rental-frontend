@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 
-const API_URL = process.env.REACT_APP_API_BASE_URL;
+const API_URL = import.meta.env.VITE_API_BASE_URL;
+
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
