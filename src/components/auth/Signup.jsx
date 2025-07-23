@@ -4,6 +4,7 @@ import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#0D1117] flex flex-col justify-center items-center px-4">
@@ -35,6 +36,7 @@ const SignupPage = () => {
             />
           </div>
 
+          {/* Password Field */}
           <div className="relative">
             <label htmlFor="password" className="block text-gray-300 font-medium mb-2">
               Password
@@ -50,6 +52,25 @@ const SignupPage = () => {
               className="absolute right-3 top-10 cursor-pointer text-gray-400"
             >
               {showPassword ? <FiEyeOff /> : <FiEye />}
+            </div>
+          </div>
+
+          {/* Confirm Password Field */}
+          <div className="relative">
+            <label htmlFor="confirm-password" className="block text-gray-300 font-medium mb-2">
+              Confirm Password
+            </label>
+            <input
+              type={showConfirmPassword ? 'text' : 'password'}
+              id="confirm-password"
+              placeholder="********"
+              className="w-full px-4 py-2 bg-[#0D1117] border border-gray-700 rounded-md text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#FACC15]"
+            />
+            <div
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-3 top-10 cursor-pointer text-gray-400"
+            >
+              {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
             </div>
           </div>
 
