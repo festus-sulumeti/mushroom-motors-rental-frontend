@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 
+const API_URL = process.env.REACT_APP_API_BASE_URL;
+
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
@@ -12,7 +14,7 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('/admin/login', {
+      const response = await fetch('${API_URL}/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
