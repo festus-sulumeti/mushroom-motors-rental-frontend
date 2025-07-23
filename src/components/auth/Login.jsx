@@ -12,29 +12,33 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const response = await fetch(`${API_URL}/admin/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+  const isAdmin = email === 'admin@gmail.com';
+  const loginEndpoint = isAdmin ? `${API_URL}/admin/login` : `${API_URL}/api/auth/login`;
 
-      const data = await response.json();
+  try {
+    const response = await fetch(loginEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
 
-      if (data.success && email === 'admin@gmail.com') {
-        navigate('/admin-dashboard');
-      } else if (data.success) {
-        navigate('/user-dashboard');
-      } else {
-        alert('Invalid credentials');
-      }
-    } catch (error) {
-      console.error('Login failed:', error);
-      alert('Server error');
+    const data = await response.json();
+
+    if (data.success && isAdmin) {
+      navigate('/admin-dashboard');
+    } else if (data.success) {
+      navigate('/user-dashboard');
+    } else {
+      alert('Invalid credentials');
     }
-  };
+  } catch (error) {
+    console.error('Login failed:', error);
+    alert('Server error');
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-[#0D1117] flex flex-col justify-center items-center px-4">
