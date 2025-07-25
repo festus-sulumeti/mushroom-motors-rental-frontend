@@ -29,6 +29,30 @@ const ManageUsers = () => {
       });
   }, []);
 
+const handleDelete = (userId) => {
+  if (!confirm("Are you sure you want to delete this user?")) return;
+
+  fetch(`${API_URL}/api/users/${userId}`, {
+    method: 'DELETE',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(async (response) => {
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.message || 'Failed to delete user');
+      }
+      // Remove user from local state
+      setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
+    })
+    .catch(error => {
+      console.error('❌ Error deleting user:', error);
+      alert("Failed to delete user.");
+    });
+};
+
   return (
     <div className="min-h-screen bg-[#0D1117] text-white px-10 py-16">
       <h2 className="text-4xl font-extrabold text-[#FACC15] mb-8">Manage Users</h2>
@@ -58,10 +82,13 @@ const ManageUsers = () => {
                 <td className="p-4">{user.email}</td>
                 <td className="p-4">{user.role}</td>
                 <td className="p-4 flex space-x-4">
-                  <button className="text-red-500 hover:text-red-400 text-sm flex items-center transition">
+                 <button
+                    onClick={() => handleDelete(user.id)}
+                    className="text-red-500 hover:text-red-400 text-sm flex items-center transition"
+                    >
                     <FaTrash className="mr-1" />
                     Delete
-                  </button>
+                 </button>
                 </td>
               </tr>
             ))}
