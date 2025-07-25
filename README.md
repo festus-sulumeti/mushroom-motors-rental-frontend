@@ -37,22 +37,6 @@ This application serves as the customer-facing portal for Mushroom Motors, a veh
 - **Lint the codebase:**  
   `npm run lint` or `yarn lint`
 
-## Project Structure
-
-```
-├── public/                # Static assets
-├── src/
-│   ├── components/        # Reusable UI components
-│   ├── pages/             # Application pages (Home, Vehicle, Booking, Admin, etc.)
-│   ├── hooks/             # Custom React hooks
-│   ├── services/          # API integration and business logic
-│   ├── App.jsx            # Main application component
-│   ├── main.jsx           # Entry point
-│   └── ...                # Other source files
-├── package.json           # Project metadata and scripts
-├── vite.config.js         # Vite configuration
-└── README.md              # Project documentation
-```
 
 ## Configuration
 
@@ -69,25 +53,6 @@ We welcome contributions from the community! Please fork the repository, create 
 
 This project is licensed under the MIT License.
 
-## Contact & Support
-
-For questions, feedback, or support, please contact [your-email@example.com](mailto:your-email@example.com).
-
----
-
-Empowering seamless vehicle rentals with Mushroom Motors.
-├── src/
-│   ├── components/        # Reusable UI components
-│   ├── pages/             # Page components (Home, Vehicle, Booking, Admin, etc.)
-│   ├── hooks/             # Custom React hooks
-│   ├── services/          # API calls and business logic
-│   ├── App.jsx            # Main app component
-│   ├── main.jsx           # Entry point
-│   └── ...                # Other source files
-├── package.json           # Project metadata and scripts
-├── vite.config.js         # Vite configuration
-└── README.md              # Project documentation
-```
 
 ## Environment Variables
 
