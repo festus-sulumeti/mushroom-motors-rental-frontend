@@ -7,6 +7,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const AdminDashboardHome = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [userCount, setUserCount] = useState(0);
+  const [vehicleCount, setVehicleCount] = useState(0);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/users/count`)
@@ -20,11 +21,22 @@ const AdminDashboardHome = () => {
       .catch((err) => {
         console.error('Error fetching user count:', err);
       });
+
+    fetch(`${API_BASE_URL}/api/cars`)
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch vehicles');
+        return res.json();
+      })
+      .then((data) => {
+        setVehicleCount(data.cars.length);
+      })
+      .catch((err) => {
+        console.error('Error fetching vehicles:', err);
+      });
   }, []);
 
   return (
     <div className="min-h-screen bg-[#0D1117] text-white flex flex-col">
-      {/* Header */}
       <header className="bg-[#161B22] p-6 flex justify-between items-center shadow-md relative">
         <h1 className="text-2xl font-bold text-[#FACC15]">Mushroom Motors Admin</h1>
         <div className="flex space-x-4">
@@ -52,18 +64,16 @@ const AdminDashboardHome = () => {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="flex-grow px-10 py-16">
         <h2 className="text-4xl font-extrabold mb-4 text-[#FACC15]">Welcome Admin!</h2>
         <p className="text-gray-400 mb-12 max-w-2xl">
           Oversee vehicles, users, bookings, and reports — all from this central dashboard.
         </p>
 
-        {/* Admin Quick Stats */}
         <div className="grid md:grid-cols-4 gap-6 mb-12">
           <div className="bg-[#161B22] rounded-xl p-6 text-center shadow-md">
             <h3 className="text-lg font-semibold mb-2">Total Vehicles</h3>
-            <p className="text-3xl font-bold text-[#FACC15]">34</p>
+            <p className="text-3xl font-bold text-[#FACC15]">{vehicleCount}</p>
           </div>
           <div className="bg-[#161B22] rounded-xl p-6 text-center shadow-md">
             <h3 className="text-lg font-semibold mb-2">Active Rentals</h3>
@@ -79,7 +89,6 @@ const AdminDashboardHome = () => {
           </div>
         </div>
 
-        {/* Admin Management Cards */}
         <div className="grid md:grid-cols-3 gap-10 mb-12">
           <div className="bg-[#161B22] rounded-xl p-8 shadow-md hover:ring-2 hover:ring-[#FACC15] transition cursor-pointer">
             <FaClipboardList className="text-3xl text-[#FACC15] mb-4" />
@@ -103,7 +112,6 @@ const AdminDashboardHome = () => {
           </div>
         </div>
 
-        {/* Recent Activity */}
         <div className="bg-[#161B22] rounded-xl p-6 shadow-md">
           <h3 className="text-2xl font-semibold mb-4 text-[#FACC15] flex items-center">
             <FaChartBar className="mr-2" /> System Logs
@@ -116,7 +124,6 @@ const AdminDashboardHome = () => {
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="bg-[#161B22] text-gray-300 text-center py-6 text-sm">
         &copy; {new Date().getFullYear()} Mushroom Motors — Admin Panel.
       </footer>
