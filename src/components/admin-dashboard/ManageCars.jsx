@@ -122,9 +122,7 @@ const ManageCars = () => {
                   </span>
                 </td>
                 <td className="p-4 flex space-x-4">
-                  <button className="flex items-center text-blue-400 hover:underline text-sm">
-                    <FaEdit className="mr-1" /> Edit
-                  </button>
+                 
                   <button onClick={() => handleDelete(car.id)} className="flex items-center text-red-500 hover:underline text-sm">
                     <FaTrash className="mr-1" /> Delete
                   </button>
