@@ -7,6 +7,7 @@ import UserDashboardHome from './components/user-dashboard/UserDashboardHome';
 import AccountSettings from './components/user-dashboard/AccountSettings';
 import AdminDashboardHome from './components/admin-dashboard/AdminDashboardHome';
 import ManageUsers from './components/admin-dashboard/ManageUsers';
+import ManageCars from './components/admin-dashboard/ManageCars';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/account-settings" element={<AccountSettings />} />
         <Route path="/admin-dashboard" element={<AdminDashboardHome />} />
         <Route path="/admin/users" element={<ManageUsers />} />
+        <Route path="/admin/manage-cars" element={<ManageCars />} />
       </Routes>
     </Router>
   );
