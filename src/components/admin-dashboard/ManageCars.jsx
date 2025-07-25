@@ -1,22 +1,55 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaCarSide, FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 
-const ManageCars = () => {
-  const [cars, setCars] = useState([
-    { id: 1, name: 'Toyota Premio', model: '2020', status: 'Available' },
-    { id: 2, name: 'Mazda Demio', model: '2018', status: 'Rented' },
-    { id: 3, name: 'Nissan Note', model: '2019', status: 'Available' },
-  ]);
+const API_URL = import.meta.env.VITE_API_BASE_URL;
 
+const ManageCars = () => {
+  const [cars, setCars] = useState([]);
   const [newCar, setNewCar] = useState({ name: '', model: '', status: 'Available' });
 
+  // Fetch cars
+  useEffect(() => {
+    fetch(`${API_URL}/api/cars`, { credentials: 'include' })
+      .then((res) => res.json())
+      .then((data) => setCars(data.cars))
+      .catch((err) => console.error('Failed to fetch cars:', err));
+  }, []);
+
+  // Add new car
   const handleAddCar = (e) => {
     e.preventDefault();
     if (!newCar.name || !newCar.model) return;
 
-    const id = cars.length + 1;
-    setCars([...cars, { ...newCar, id }]);
-    setNewCar({ name: '', model: '', status: 'Available' });
+    fetch(`${API_URL}/api/cars`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(newCar),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setCars([...cars, data.car]);
+          setNewCar({ name: '', model: '', status: 'Available' });
+        }
+      })
+      .catch((err) => console.error('Failed to add car:', err));
+  };
+
+  // Delete car
+  const handleDelete = (id) => {
+    fetch(`${API_URL}/api/cars/${id}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setCars(cars.filter((car) => car.id !== id));
+        }
+      });
   };
 
   return (
@@ -92,7 +125,7 @@ const ManageCars = () => {
                   <button className="flex items-center text-blue-400 hover:underline text-sm">
                     <FaEdit className="mr-1" /> Edit
                   </button>
-                  <button className="flex items-center text-red-500 hover:underline text-sm">
+                  <button onClick={() => handleDelete(car.id)} className="flex items-center text-red-500 hover:underline text-sm">
                     <FaTrash className="mr-1" /> Delete
                   </button>
                 </td>
