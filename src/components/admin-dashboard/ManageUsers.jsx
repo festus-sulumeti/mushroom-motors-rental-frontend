@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaUser, FaTrash, FaEdit } from 'react-icons/fa';
+import axios from 'axios';
 
 const ManageUsers = () => {
-  const users = [
-    { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Customer' },
-    { id: 2, name: 'Jane Wambui', email: 'jane@example.com', role: 'Customer' },
-    { id: 3, name: 'Brian Otieno', email: 'brian@example.com', role: 'Customer' },
-  ];
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    // Fetch users from the backend
+    axios.get('http://127.0.0.1:5000/api/users', { withCredentials: true })
+      .then(response => {
+        setUsers(response.data.users);
+      })
+      .catch(error => {
+        console.error('Error fetching users:', error);
+      });
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#0D1117] text-white px-10 py-16">
