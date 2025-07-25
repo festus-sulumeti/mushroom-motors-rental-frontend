@@ -42,7 +42,7 @@ This application serves as the customer-facing portal for Mushroom Motors, a veh
 
 Create a `.env` file in the project root to specify environment variables such as API endpoints:
 ```
-VITE_API_URL=https://api.mushroommotors.com
+VITE_API_URL=your backend api 
 ```
 
 ## Contributing
