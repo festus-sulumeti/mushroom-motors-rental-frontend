@@ -58,10 +58,6 @@ const ManageUsers = () => {
                 <td className="p-4">{user.email}</td>
                 <td className="p-4">{user.role}</td>
                 <td className="p-4 flex space-x-4">
-                  <button className="text-blue-400 hover:text-blue-300 text-sm flex items-center transition">
-                    <FaEdit className="mr-1" />
-                    Edit
-                  </button>
                   <button className="text-red-500 hover:text-red-400 text-sm flex items-center transition">
                     <FaTrash className="mr-1" />
                     Delete
