@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { FaUser, FaTrash, FaEdit } from 'react-icons/fa';
-import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -8,13 +7,25 @@ const ManageUsers = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    // Fetch users from the backend
-    axios.get(`${API_URL}/api/users`, { withCredentials: true })
-      .then(response => {
-        setUsers(response.data.users);
+    console.log("📡 Fetching users from:", `${API_URL}/api/users`);
+
+    fetch(`${API_URL}/api/users`, {
+      method: 'GET',
+      credentials: 'include', // same as axios's withCredentials: true
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log('✅ Users fetched:', data.users);
+        setUsers(data.users);
       })
-      .catch(error => {
-        console.error('Error fetching users:', error);
+      .catch((error) => {
+        console.error('❌ Error fetching users:', error);
       });
   }, []);
 
