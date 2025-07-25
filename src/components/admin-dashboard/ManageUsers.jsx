@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { FaUser, FaTrash, FaEdit } from 'react-icons/fa';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_BASE_URL;
+
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     // Fetch users from the backend
-    axios.get('http://127.0.0.1:5000/api/users', { withCredentials: true })
+    axios.get(`${API_URL}/api/users`, { withCredentials: true })
       .then(response => {
         setUsers(response.data.users);
       })
