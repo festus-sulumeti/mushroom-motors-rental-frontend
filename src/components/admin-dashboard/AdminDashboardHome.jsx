@@ -1,21 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaCarSide, FaUsers, FaClipboardList, FaCog, FaBell, FaChartBar } from 'react-icons/fa';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const AdminDashboardHome = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [userCount, setUserCount] = useState(0);
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/users/count`)
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch user count');
+        return res.json();
+      })
+      .then((data) => {
+        setUserCount(data.count);
+      })
+      .catch((err) => {
+        console.error('Error fetching user count:', err);
+      });
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#0D1117] text-white flex flex-col">
       {/* Header */}
       <header className="bg-[#161B22] p-6 flex justify-between items-center shadow-md relative">
         <h1 className="text-2xl font-bold text-[#FACC15]">Mushroom Motors Admin</h1>
-
         <div className="flex space-x-4">
           <button className="text-gray-300 text-2xl hover:text-[#FACC15]">
             <FaBell />
           </button>
-
           <div className="relative">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -56,7 +71,7 @@ const AdminDashboardHome = () => {
           </div>
           <div className="bg-[#161B22] rounded-xl p-6 text-center shadow-md">
             <h3 className="text-lg font-semibold mb-2">Registered Users</h3>
-            <p className="text-3xl font-bold text-[#FACC15]">210</p>
+            <p className="text-3xl font-bold text-[#FACC15]">{userCount}</p>
           </div>
           <div className="bg-[#161B22] rounded-xl p-6 text-center shadow-md">
             <h3 className="text-lg font-semibold mb-2">Pending Approvals</h3>
