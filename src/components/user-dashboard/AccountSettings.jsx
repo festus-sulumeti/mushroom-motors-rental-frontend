@@ -1,23 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const AccountSettings = () => {
-  const [accountDetails] = useState({
-    name: 'John Doe',
-    email: 'johndoe@example.com',
-    phone: '+254712345678',
-    memberSince: 'January 2024',
+  // Load user details from localStorage (or replace with context/auth if available)
+  const [accountDetails, setAccountDetails] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    memberSince: '',
   });
 
   const [editForm, setEditForm] = useState({
-    name: accountDetails.name,
-    email: accountDetails.email,
-    phone: accountDetails.phone,
+    name: '',
+    email: '',
+    phone: '',
     password: '',
     confirmPassword: '',
   });
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      setAccountDetails({
+        name: user.name || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        memberSince: user.memberSince || '',
+      });
+      setEditForm({
+        name: user.name || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        password: '',
+        confirmPassword: '',
+      });
+    }
+  }, []);
 
   const handleEditChange = (e) => {
     setEditForm({ ...editForm, [e.target.name]: e.target.value });
