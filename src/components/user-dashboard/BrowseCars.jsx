@@ -6,7 +6,8 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const BrowseCars = () => {
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [addedToCart, setAddedToCart] = useState({}); // { [carId]: true }
+  const [addedToCart, setAddedToCart] = useState({});
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/cars`)
@@ -22,18 +23,23 @@ const BrowseCars = () => {
   }, []);
 
   const handleAddToCart = (car) => {
-    // Get cart from localStorage
     const cart = JSON.parse(localStorage.getItem('rentalCart') || '[]');
-    // Add car if not already in cart
     if (!cart.find(item => item.id === car.id)) {
       cart.push(car);
       localStorage.setItem('rentalCart', JSON.stringify(cart));
     }
     setAddedToCart(prev => ({ ...prev, [car.id]: true }));
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 2500);
   };
 
   return (
     <div className="min-h-screen bg-[#0D1117] text-white p-6 sm:p-10">
+      {showPopup && (
+        <div className="fixed top-6 left-1/2 transform -translate-x-1/2 bg-green-700 text-white px-6 py-3 rounded shadow-lg z-50 transition">
+          Car added to cart, open My Rentals to finish purchase
+        </div>
+      )}
       <h1 className="text-3xl font-bold text-[#FACC15] mb-6">All Cars</h1>
       {loading ? (
         <p className="text-gray-400">Loading cars...</p>
@@ -77,9 +83,7 @@ const BrowseCars = () => {
                       }`}
                       disabled={!!addedToCart[car.id]}
                     >
-                      {addedToCart[car.id]
-                        ? 'Car added to cart, open My Rentals to finish purchase'
-                        : 'Rent Now'}
+                      Rent Now
                     </button>
                   </td>
                 </tr>
