@@ -83,7 +83,7 @@ const UserDashboardHome = () => {
             <FaCarSide className="text-3xl text-[#FACC15] mb-4" />
             <h3 className="text-xl font-semibold text-white mb-2">Browse Cars</h3>
             <p className="text-gray-400 mb-4">Find the latest vehicles available to rent in Kenya.</p>
-            <Link to="/cars" className="text-[#FACC15] font-medium hover:underline">Browse Cars →</Link>
+            <Link to="/user/browse-cars" className="text-[#FACC15] font-medium hover:underline">Browse Cars →</Link>
           </div>
 
           <div className="bg-[#161B22] rounded-xl p-8 shadow-md hover:ring-2 hover:ring-[#FACC15] transition cursor-pointer">
