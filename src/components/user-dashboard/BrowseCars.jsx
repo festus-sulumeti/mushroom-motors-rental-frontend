@@ -10,7 +10,6 @@ const BrowseCars = () => {
     fetch(`${API_BASE_URL}/api/cars`)
       .then((res) => res.json())
       .then((data) => {
-        // Filter to show only available cars
         const availableCars = (data.cars || []).filter(car => car.status === 'Available');
         setCars(availableCars);
         setLoading(false);
@@ -20,6 +19,20 @@ const BrowseCars = () => {
         setLoading(false);
       });
   }, []);
+
+  const handleRent = (carId) => {
+    fetch(`${API_BASE_URL}/api/cars/${carId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'Rented' })
+    })
+      .then((res) => res.json())
+      .then(() => {
+        // Remove the rented car from list
+        setCars((prevCars) => prevCars.filter(car => car.id !== carId));
+      })
+      .catch((err) => console.error('Renting failed:', err));
+  };
 
   return (
     <div className="min-h-screen bg-[#0D1117] text-white px-8 py-12">
@@ -33,12 +46,14 @@ const BrowseCars = () => {
         <div className="grid md:grid-cols-3 gap-6">
           {cars.map((car) => (
             <div key={car.id} className="bg-[#161B22] p-6 rounded-lg shadow-md">
-              <h3 className="text-xl font-semibold text-white">
-                {car.name} - {car.model}
-              </h3>
-              <p className="text-sm text-gray-500 mt-1">
-                Added on: {new Date(car.created_at).toLocaleDateString()}
-              </p>
+              <h3 className="text-xl font-semibold text-white">{car.name} - {car.model}</h3>
+              <p className="text-sm text-gray-500 mt-1">Added: {new Date(car.created_at).toLocaleDateString()}</p>
+              <button
+                onClick={() => handleRent(car.id)}
+                className="mt-4 bg-[#FACC15] hover:bg-yellow-400 text-black font-semibold py-2 px-4 rounded"
+              >
+                Rent Now
+              </button>
             </div>
           ))}
         </div>
