@@ -8,6 +8,7 @@ const AdminDashboardHome = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [userCount, setUserCount] = useState(0);
   const [vehicleCount, setVehicleCount] = useState(0);
+  const [rentedCount, setRentedCount] = useState(0);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/users/count`)
@@ -33,6 +34,18 @@ const AdminDashboardHome = () => {
       .catch((err) => {
         console.error('Error fetching vehicles:', err);
       });
+
+    fetch(`${API_BASE_URL}/api/cars/rented`)
+    .then((res) => {
+      if (!res.ok) throw new Error('Failed to fetch rented cars');
+      return res.json();
+    })
+    .then((data) => {
+      setRentedCount(data.rented_cars.length);
+    })
+    .catch((err) => {
+      console.error('Error fetching rented cars:', err);
+    });
   }, []);
 
   return (
@@ -77,8 +90,9 @@ const AdminDashboardHome = () => {
           </div>
           <div className="bg-[#161B22] rounded-xl p-6 text-center shadow-md">
             <h3 className="text-lg font-semibold mb-2">Active Rentals</h3>
-            <p className="text-3xl font-bold text-[#FACC15]">12</p>
+            <p className="text-3xl font-bold text-[#FACC15]">{rentedCount}</p>
           </div>
+
           <div className="bg-[#161B22] rounded-xl p-6 text-center shadow-md">
             <h3 className="text-lg font-semibold mb-2">Registered Users</h3>
             <p className="text-3xl font-bold text-[#FACC15]">{userCount}</p>
