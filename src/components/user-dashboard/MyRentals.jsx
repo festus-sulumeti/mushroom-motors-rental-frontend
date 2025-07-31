@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { FaCarSide, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
+// Dummy user name for demonstration; replace with actual user context/auth if available
+const USER_NAME = "John Doe";
+
 const MyRentals = () => {
   const [cart, setCart] = useState([]);
   const [processingId, setProcessingId] = useState(null);
   const [cancelingId, setCancelingId] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem('rentalCart') || '[]');
@@ -13,12 +17,13 @@ const MyRentals = () => {
 
   const handleFinalize = (carId) => {
     setProcessingId(carId);
-    // Simulate API call
     setTimeout(() => {
       const updatedCart = cart.filter(car => car.id !== carId);
       setCart(updatedCart);
       localStorage.setItem('rentalCart', JSON.stringify(updatedCart));
       setProcessingId(null);
+      setSuccessMessage(`You have successfully rented the car, ${USER_NAME}!`);
+      setTimeout(() => setSuccessMessage(''), 3000);
     }, 1000);
   };
 
@@ -36,6 +41,13 @@ const MyRentals = () => {
     <div className="min-h-screen bg-[#0D1117] text-white px-4 py-10 sm:px-8 sm:py-12">
       <h1 className="text-3xl font-bold text-[#FACC15] mb-2">My Rentals</h1>
       <p className="text-gray-400 mb-8 text-sm">Review and finalize your car rentals below.</p>
+      {successMessage && (
+        <div className="mb-6 flex items-center justify-center">
+          <span className="bg-green-700 text-white px-6 py-3 rounded shadow flex items-center gap-2 text-lg">
+            <FaCheckCircle className="text-xl" /> {successMessage}
+          </span>
+        </div>
+      )}
       {cart.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-64">
           <FaCarSide className="text-5xl text-gray-700 mb-4" />
