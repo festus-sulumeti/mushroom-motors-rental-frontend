@@ -76,7 +76,7 @@ const UserDashboardHome = () => {
             <FaClipboardList className="text-3xl text-[#FACC15] mb-4" />
             <h3 className="text-xl font-semibold text-white mb-2">My Rentals</h3>
             <p className="text-gray-400 mb-4">View and manage your active or previous rentals.</p>
-            <Link to="/my-rentals" className="text-[#FACC15] font-medium hover:underline">Go to My Rentals →</Link>
+            <Link to="/user/my-rentals" className="text-[#FACC15] font-medium hover:underline">Go to My Rentals →</Link>
           </div>
 
           <div className="bg-[#161B22] rounded-xl p-8 shadow-md hover:ring-2 hover:ring-[#FACC15] transition cursor-pointer">
