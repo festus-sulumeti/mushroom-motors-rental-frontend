@@ -62,7 +62,7 @@ const UserDashboardHome = () => {
             <p className="text-3xl font-bold text-[#FACC15]">15</p>
           </div>
           <div className="bg-[#161B22] rounded-xl p-6 text-center shadow-md flex flex-col items-center">
-            <h3 className="text-lg font-semibold mb-2">Pending Payments</h3>
+            <h3 className="text-lg font-semibold mb-2">Make Payments</h3>
             <button
               onClick={() => setShowPaymentModal(true)}
               className="bg-[#FACC15] hover:bg-yellow-400 text-black font-semibold py-2 px-4 rounded transition mt-2"
