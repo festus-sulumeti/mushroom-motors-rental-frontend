@@ -6,6 +6,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const BrowseCars = () => {
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [addedToCart, setAddedToCart] = useState({}); // { [carId]: true }
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/cars`)
@@ -20,21 +21,15 @@ const BrowseCars = () => {
       });
   }, []);
 
-  const handleRent = (carId) => {
-    fetch(`${API_BASE_URL}/api/cars/${carId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status: 'Rented' })
-    })
-      .then((res) => res.json())
-      .then(() => {
-        setCars((prevCars) =>
-          prevCars.map(car =>
-            car.id === carId ? { ...car, status: 'Rented' } : car
-          )
-        );
-      })
-      .catch((err) => console.error('Renting failed:', err));
+  const handleAddToCart = (car) => {
+    // Get cart from localStorage
+    const cart = JSON.parse(localStorage.getItem('rentalCart') || '[]');
+    // Add car if not already in cart
+    if (!cart.find(item => item.id === car.id)) {
+      cart.push(car);
+      localStorage.setItem('rentalCart', JSON.stringify(cart));
+    }
+    setAddedToCart(prev => ({ ...prev, [car.id]: true }));
   };
 
   return (
@@ -76,10 +71,15 @@ const BrowseCars = () => {
                   <td className="p-4">{car.created_at ? new Date(car.created_at).toLocaleDateString() : '-'}</td>
                   <td className="p-4">
                     <button
-                      onClick={() => handleRent(car.id)}
-                      className="bg-[#FACC15] hover:bg-yellow-400 text-black font-semibold py-2 px-4 rounded"
+                      onClick={() => handleAddToCart(car)}
+                      className={`bg-[#FACC15] hover:bg-yellow-400 text-black font-semibold py-2 px-4 rounded w-full text-xs sm:text-sm ${
+                        addedToCart[car.id] ? 'opacity-70 cursor-not-allowed' : ''
+                      }`}
+                      disabled={!!addedToCart[car.id]}
                     >
-                      Rent Now
+                      {addedToCart[car.id]
+                        ? 'Car added to cart, open My Rentals to finish purchase'
+                        : 'Rent Now'}
                     </button>
                   </td>
                 </tr>
