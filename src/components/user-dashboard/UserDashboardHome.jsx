@@ -129,17 +129,19 @@ const UserDashboardHome = () => {
 // Payment Modal Component
 function PaymentModal({ onClose }) {
   const [amount, setAmount] = React.useState('');
+  const [paybill, setPaybill] = React.useState('');
   const [paying, setPaying] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
 
   const handlePay = (e) => {
     e.preventDefault();
-    if (!amount || isNaN(amount) || Number(amount) <= 0) return;
+    if (!amount || isNaN(amount) || Number(amount) <= 0 || !paybill || isNaN(paybill)) return;
     setPaying(true);
     setTimeout(() => {
       setPaying(false);
       setSuccess(true);
       setAmount('');
+      setPaybill('');
       setTimeout(() => {
         setSuccess(false);
         onClose();
@@ -160,6 +162,16 @@ function PaymentModal({ onClose }) {
         <h2 className="text-2xl font-bold text-[#FACC15] mb-4 text-center">Make a Payment</h2>
         <form onSubmit={handlePay} className="flex flex-col items-center gap-3">
           <input
+            type="text"
+            placeholder="Enter Paybill Number"
+            value={paybill}
+            onChange={e => setPaybill(e.target.value)}
+            className="w-full px-3 py-2 rounded bg-[#0D1117] border border-gray-700 text-white text-center"
+            disabled={paying || success}
+            maxLength={20}
+            required
+          />
+          <input
             type="number"
             min="1"
             placeholder="Enter amount"
@@ -167,11 +179,20 @@ function PaymentModal({ onClose }) {
             onChange={e => setAmount(e.target.value)}
             className="w-full px-3 py-2 rounded bg-[#0D1117] border border-gray-700 text-white text-center"
             disabled={paying || success}
+            required
           />
           <button
             type="submit"
             className="bg-[#FACC15] hover:bg-yellow-400 text-black font-semibold py-2 px-4 rounded w-full transition"
-            disabled={paying || !amount || isNaN(amount) || Number(amount) <= 0 || success}
+            disabled={
+              paying ||
+              !amount ||
+              isNaN(amount) ||
+              Number(amount) <= 0 ||
+              !paybill ||
+              isNaN(paybill) ||
+              success
+            }
           >
             {paying ? 'Processing...' : 'Pay Now'}
           </button>
