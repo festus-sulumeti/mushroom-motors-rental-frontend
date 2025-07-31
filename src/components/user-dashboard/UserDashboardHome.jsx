@@ -5,6 +5,7 @@ import { FaCarSide, FaUserCog, FaClipboardList, FaCog, FaBell, FaChartBar } from
 const UserDashboardHome = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showSupportModal, setShowSupportModal] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#0D1117] text-white flex flex-col">
@@ -73,6 +74,12 @@ const UserDashboardHome = () => {
           <div className="bg-[#161B22] rounded-xl p-6 text-center shadow-md">
             <h3 className="text-lg font-semibold mb-2">Support Tickets</h3>
             <p className="text-3xl font-bold text-[#FACC15]">1</p>
+            <button
+              onClick={() => setShowSupportModal(true)}
+              className="mt-4 bg-[#FACC15] hover:bg-yellow-400 text-black font-semibold py-2 px-4 rounded transition"
+            >
+              Support Tickets Payment
+            </button>
           </div>
         </div>
 
@@ -116,6 +123,10 @@ const UserDashboardHome = () => {
       {/* Payment Modal */}
       {showPaymentModal && (
         <PaymentModal onClose={() => setShowPaymentModal(false)} />
+      )}
+      {/* Support Tickets Modal */}
+      {showSupportModal && (
+        <SupportTicketsModal onClose={() => setShowSupportModal(false)} />
       )}
 
       {/* Footer */}
@@ -200,6 +211,352 @@ function PaymentModal({ onClose }) {
             <span className="text-green-400 text-sm mt-2">Payment successful!</span>
           )}
         </form>
+      </div>
+    </div>
+  );
+}
+
+// Support Tickets Modal Component
+function SupportTicketsModal({ onClose }) {
+  const [tickets, setTickets] = React.useState([
+    {
+      id: 1,
+      subject: 'Mpesa payment not reflecting',
+      method: 'Mpesa',
+      status: 'Open',
+      createdAt: '2024-07-20',
+      details: 'Paid via Mpesa but not updated in dashboard.',
+    },
+    {
+      id: 2,
+      subject: 'Credit card payment failed',
+      method: 'Credit Card',
+      status: 'Closed',
+      createdAt: '2024-07-18',
+      details: 'Card was charged but rental not activated.',
+    },
+  ]);
+  const [showForm, setShowForm] = React.useState(false);
+  const [form, setForm] = React.useState({
+    subject: '',
+    method: 'Mpesa',
+    details: '',
+  });
+  const [success, setSuccess] = React.useState(false);
+  const [showPaymentForm, setShowPaymentForm] = React.useState(false);
+  const [paymentType, setPaymentType] = React.useState('Mpesa');
+  const [paymentData, setPaymentData] = React.useState({
+    mpesaNumber: '',
+    mpesaAmount: '',
+    cardNumber: '',
+    cardName: '',
+    cardExpiry: '',
+    cardCVC: '',
+    cardAmount: '',
+  });
+  const [paymentSuccess, setPaymentSuccess] = React.useState(false);
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!form.subject || !form.details) return;
+    setTickets([
+      {
+        id: tickets.length + 1,
+        subject: form.subject,
+        method: form.method,
+        status: 'Open',
+        createdAt: new Date().toISOString().slice(0, 10),
+        details: form.details,
+      },
+      ...tickets,
+    ]);
+    setForm({ subject: '', method: 'Mpesa', details: '' });
+    setSuccess(true);
+    setTimeout(() => setSuccess(false), 2000);
+    setShowForm(false);
+  };
+
+  const handlePaymentInput = (e) => {
+    setPaymentData({ ...paymentData, [e.target.name]: e.target.value });
+  };
+
+  const handlePaymentSubmit = (e) => {
+    e.preventDefault();
+    setPaymentSuccess(true);
+    setTimeout(() => {
+      setPaymentSuccess(false);
+      setShowPaymentForm(false);
+      setPaymentData({
+        mpesaNumber: '',
+        mpesaAmount: '',
+        cardNumber: '',
+        cardName: '',
+        cardExpiry: '',
+        cardCVC: '',
+        cardAmount: '',
+      });
+    }, 1800);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+      <div className="bg-[#161B22] rounded-xl shadow-2xl p-8 w-full max-w-2xl relative">
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-gray-400 hover:text-[#FACC15] text-xl font-bold"
+          aria-label="Close"
+        >
+          &times;
+        </button>
+        <h2 className="text-2xl font-bold text-[#FACC15] mb-4 text-center">Support Tickets</h2>
+        <div className="flex gap-4 mb-6">
+          <button
+            onClick={() => setShowForm(true)}
+            className="bg-[#FACC15] hover:bg-yellow-400 text-black font-semibold py-2 px-6 rounded transition"
+          >
+            + Create New Ticket
+          </button>
+          <button
+            onClick={() => setShowPaymentForm(true)}
+            className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded transition"
+          >
+            Make a Payment
+          </button>
+        </div>
+        {showForm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+            <div className="bg-[#161B22] rounded-xl shadow-2xl p-8 w-full max-w-md relative">
+              <button
+                onClick={() => setShowForm(false)}
+                className="absolute top-3 right-3 text-gray-400 hover:text-[#FACC15] text-xl font-bold"
+                aria-label="Close"
+              >
+                &times;
+              </button>
+              <h2 className="text-2xl font-bold text-[#FACC15] mb-4 text-center">New Payment Support Ticket</h2>
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <div>
+                  <label className="block text-gray-300 mb-1">Subject</label>
+                  <input
+                    type="text"
+                    name="subject"
+                    value={form.subject}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 rounded bg-[#0D1117] border border-gray-700 text-white"
+                    placeholder="e.g. Mpesa payment not reflecting"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-300 mb-1">Payment Method</label>
+                  <select
+                    name="method"
+                    value={form.method}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 rounded bg-[#0D1117] border border-gray-700 text-white"
+                  >
+                    <option value="Mpesa">Mpesa</option>
+                    <option value="Credit Card">Credit Card</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-gray-300 mb-1">Details</label>
+                  <textarea
+                    name="details"
+                    value={form.details}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 rounded bg-[#0D1117] border border-gray-700 text-white"
+                    rows={4}
+                    placeholder="Describe your payment issue..."
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="bg-[#FACC15] hover:bg-yellow-400 text-black font-semibold py-2 px-4 rounded transition"
+                >
+                  Submit Ticket
+                </button>
+                {success && (
+                  <span className="text-green-400 text-sm mt-2">Ticket submitted successfully!</span>
+                )}
+              </form>
+            </div>
+          </div>
+        )}
+        {showPaymentForm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+            <div className="bg-[#161B22] rounded-xl shadow-2xl p-8 w-full max-w-md relative">
+              <button
+                onClick={() => setShowPaymentForm(false)}
+                className="absolute top-3 right-3 text-gray-400 hover:text-[#FACC15] text-xl font-bold"
+                aria-label="Close"
+              >
+                &times;
+              </button>
+              <h2 className="text-2xl font-bold text-[#FACC15] mb-4 text-center">Payment Form</h2>
+              <form onSubmit={handlePaymentSubmit} className="flex flex-col gap-4">
+                <div>
+                  <label className="block text-gray-300 mb-1">Payment Method</label>
+                  <select
+                    name="paymentType"
+                    value={paymentType}
+                    onChange={e => setPaymentType(e.target.value)}
+                    className="w-full px-3 py-2 rounded bg-[#0D1117] border border-gray-700 text-white"
+                  >
+                    <option value="Mpesa">Mpesa</option>
+                    <option value="Credit Card">Credit Card</option>
+                  </select>
+                </div>
+                {paymentType === 'Mpesa' ? (
+                  <>
+                    <div>
+                      <label className="block text-gray-300 mb-1">Mpesa Number</label>
+                      <input
+                        type="text"
+                        name="mpesaNumber"
+                        value={paymentData.mpesaNumber}
+                        onChange={handlePaymentInput}
+                        className="w-full px-3 py-2 rounded bg-[#0D1117] border border-gray-700 text-white"
+                        placeholder="Enter Mpesa number"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-gray-300 mb-1">Amount</label>
+                      <input
+                        type="number"
+                        name="mpesaAmount"
+                        value={paymentData.mpesaAmount}
+                        onChange={handlePaymentInput}
+                        className="w-full px-3 py-2 rounded bg-[#0D1117] border border-gray-700 text-white"
+                        placeholder="Enter amount"
+                        min="1"
+                        required
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div>
+                      <label className="block text-gray-300 mb-1">Card Number</label>
+                      <input
+                        type="text"
+                        name="cardNumber"
+                        value={paymentData.cardNumber}
+                        onChange={handlePaymentInput}
+                        className="w-full px-3 py-2 rounded bg-[#0D1117] border border-gray-700 text-white"
+                        placeholder="Card Number"
+                        maxLength={19}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-gray-300 mb-1">Name on Card</label>
+                      <input
+                        type="text"
+                        name="cardName"
+                        value={paymentData.cardName}
+                        onChange={handlePaymentInput}
+                        className="w-full px-3 py-2 rounded bg-[#0D1117] border border-gray-700 text-white"
+                        placeholder="Name on Card"
+                        required
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      <div className="flex-1">
+                        <label className="block text-gray-300 mb-1">Expiry</label>
+                        <input
+                          type="text"
+                          name="cardExpiry"
+                          value={paymentData.cardExpiry}
+                          onChange={handlePaymentInput}
+                          className="w-full px-3 py-2 rounded bg-[#0D1117] border border-gray-700 text-white"
+                          placeholder="MM/YY"
+                          maxLength={5}
+                          required
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <label className="block text-gray-300 mb-1">CVC</label>
+                        <input
+                          type="text"
+                          name="cardCVC"
+                          value={paymentData.cardCVC}
+                          onChange={handlePaymentInput}
+                          className="w-full px-3 py-2 rounded bg-[#0D1117] border border-gray-700 text-white"
+                          placeholder="CVC"
+                          maxLength={4}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-gray-300 mb-1">Amount</label>
+                      <input
+                        type="number"
+                        name="cardAmount"
+                        value={paymentData.cardAmount}
+                        onChange={handlePaymentInput}
+                        className="w-full px-3 py-2 rounded bg-[#0D1117] border border-gray-700 text-white"
+                        placeholder="Enter amount"
+                        min="1"
+                        required
+                      />
+                    </div>
+                  </>
+                )}
+                <button
+                  type="submit"
+                  className="bg-[#FACC15] hover:bg-yellow-400 text-black font-semibold py-2 px-4 rounded transition"
+                >
+                  Pay Now
+                </button>
+                {paymentSuccess && (
+                  <span className="text-green-400 text-sm mt-2">Payment successful!</span>
+                )}
+              </form>
+            </div>
+          </div>
+        )}
+        <div className="overflow-x-auto rounded-lg shadow-md mt-6">
+          <table className="w-full text-left text-sm border-collapse">
+            <thead>
+              <tr className="bg-[#161B22] text-gray-300">
+                <th className="p-4">#</th>
+                <th className="p-4">Subject</th>
+                <th className="p-4">Method</th>
+                <th className="p-4">Status</th>
+                <th className="p-4">Created</th>
+                <th className="p-4">Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tickets.map((ticket, idx) => (
+                <tr key={ticket.id} className="border-b border-gray-700 hover:bg-[#1C232B] transition">
+                  <td className="p-4 font-medium">{idx + 1}</td>
+                  <td className="p-4">{ticket.subject}</td>
+                  <td className="p-4">{ticket.method}</td>
+                  <td className="p-4">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        ticket.status === 'Open' ? 'bg-green-700' : 'bg-gray-600'
+                      } text-white`}
+                    >
+                      {ticket.status}
+                    </span>
+                  </td>
+                  <td className="p-4">{ticket.createdAt}</td>
+                  <td className="p-4">{ticket.details}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
