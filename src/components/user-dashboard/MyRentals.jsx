@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { FaCarSide, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
-// Dummy user name for demonstration; replace with actual user context/auth if available
-const USER_NAME = "John Doe";
-
 const MyRentals = () => {
   const [cart, setCart] = useState([]);
   const [processingId, setProcessingId] = useState(null);
   const [cancelingId, setCancelingId] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
+  const [userName, setUserName] = useState('');  // <-- New state
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem('rentalCart') || '[]');
     setCart(storedCart);
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.name) {
+      setUserName(user.name);
+    }
   }, []);
 
   const handleFinalize = (carId) => {
@@ -22,7 +25,7 @@ const MyRentals = () => {
       setCart(updatedCart);
       localStorage.setItem('rentalCart', JSON.stringify(updatedCart));
       setProcessingId(null);
-      setSuccessMessage(`You have successfully rented the car, ${USER_NAME}!`);
+      setSuccessMessage(`You have successfully rented the car, ${userName || 'User'}!`);
       setTimeout(() => setSuccessMessage(''), 3000);
     }, 1000);
   };
