@@ -4,6 +4,7 @@ import { FaCarSide, FaUserCog, FaClipboardList, FaCog, FaBell, FaChartBar } from
 
 const UserDashboardHome = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#0D1117] text-white flex flex-col">
@@ -60,9 +61,14 @@ const UserDashboardHome = () => {
             <h3 className="text-lg font-semibold mb-2">Total Rentals</h3>
             <p className="text-3xl font-bold text-[#FACC15]">15</p>
           </div>
-          <div className="bg-[#161B22] rounded-xl p-6 text-center shadow-md">
+          <div className="bg-[#161B22] rounded-xl p-6 text-center shadow-md flex flex-col items-center">
             <h3 className="text-lg font-semibold mb-2">Pending Payments</h3>
-            <p className="text-3xl font-bold text-[#FACC15]">Ksh 3,000</p>
+            <button
+              onClick={() => setShowPaymentModal(true)}
+              className="bg-[#FACC15] hover:bg-yellow-400 text-black font-semibold py-2 px-4 rounded transition mt-2"
+            >
+              Pay Now
+            </button>
           </div>
           <div className="bg-[#161B22] rounded-xl p-6 text-center shadow-md">
             <h3 className="text-lg font-semibold mb-2">Support Tickets</h3>
@@ -107,6 +113,11 @@ const UserDashboardHome = () => {
         </div>
       </main>
 
+      {/* Payment Modal */}
+      {showPaymentModal && (
+        <PaymentModal onClose={() => setShowPaymentModal(false)} />
+      )}
+
       {/* Footer */}
       <footer className="bg-[#161B22] text-gray-300 text-center py-6 text-sm">
         &copy; {new Date().getFullYear()} Mushroom Motors — All Rights Reserved.
@@ -114,5 +125,63 @@ const UserDashboardHome = () => {
     </div>
   );
 };
+
+// Payment Modal Component
+function PaymentModal({ onClose }) {
+  const [amount, setAmount] = React.useState('');
+  const [paying, setPaying] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
+
+  const handlePay = (e) => {
+    e.preventDefault();
+    if (!amount || isNaN(amount) || Number(amount) <= 0) return;
+    setPaying(true);
+    setTimeout(() => {
+      setPaying(false);
+      setSuccess(true);
+      setAmount('');
+      setTimeout(() => {
+        setSuccess(false);
+        onClose();
+      }, 1500);
+    }, 1200);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+      <div className="bg-[#161B22] rounded-xl shadow-2xl p-8 w-full max-w-sm relative">
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-gray-400 hover:text-[#FACC15] text-xl font-bold"
+          aria-label="Close"
+        >
+          &times;
+        </button>
+        <h2 className="text-2xl font-bold text-[#FACC15] mb-4 text-center">Make a Payment</h2>
+        <form onSubmit={handlePay} className="flex flex-col items-center gap-3">
+          <input
+            type="number"
+            min="1"
+            placeholder="Enter amount"
+            value={amount}
+            onChange={e => setAmount(e.target.value)}
+            className="w-full px-3 py-2 rounded bg-[#0D1117] border border-gray-700 text-white text-center"
+            disabled={paying || success}
+          />
+          <button
+            type="submit"
+            className="bg-[#FACC15] hover:bg-yellow-400 text-black font-semibold py-2 px-4 rounded w-full transition"
+            disabled={paying || !amount || isNaN(amount) || Number(amount) <= 0 || success}
+          >
+            {paying ? 'Processing...' : 'Pay Now'}
+          </button>
+          {success && (
+            <span className="text-green-400 text-sm mt-2">Payment successful!</span>
+          )}
+        </form>
+      </div>
+    </div>
+  );
+}
 
 export default UserDashboardHome;
